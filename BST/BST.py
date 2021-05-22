@@ -51,10 +51,14 @@ class BSTNode:
 
 
     def find_min(self):
-        return self.left.inorder_traversal()[0]
+        if self.right is None:
+            return self.data
+        return self.right.find_min()
 
     def find_max(self):
-        return self.right.inorder_traversal()[-1]
+        if self.left is None:
+            return self.data
+        return self.right.find_max()
 
     def calculate_sum(self):
         sum=0
@@ -83,6 +87,30 @@ class BSTNode:
         elements.append(self.data)
 
         return elements
+
+
+
+    def delete(self,val):
+        if val < self.data:
+            if self.left:
+                self.left = self.left.delete(val)
+        elif val > self.data:
+            if self.right:
+                self.right = self.right.delete(val)
+        else:
+            if self.right is None and self.left is None:
+                return None
+            elif self.left is None:
+                return self.right
+            elif self.right is None:
+                return self.left
+
+            max_val =self.left.find_max()
+            self.data =max_val
+            self.left = self.left.delete(max_val)
+
+        return self
+
 
 
     def preorder_traversal(self):
@@ -129,4 +157,7 @@ if __name__=='__main__':
     print(numbers_tree.postorder_traversal())
     print('preorder_traversal')
     print(numbers_tree.preorder_traversal())
+    print('delete value')
+    numbers_tree.delete(20)
+    print(numbers_tree.inorder_traversal())
 
